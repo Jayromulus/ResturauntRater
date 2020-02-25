@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 
 
-// square brackets are giving each property information such as the [Key] being the primatry key, [Required] means it is required to add it to the database, and [Range(min,max)] giving it a range of numbers it is allowed to be
+// square brackets are called annotations, giving each property information such as the [Key] being the primatry key, [Required] means it is required to add it to the database, and [Range(min,max)] giving it a range of numbers it is allowed to be
 namespace ResturauntRater.Models
 {
     public class Restaurant

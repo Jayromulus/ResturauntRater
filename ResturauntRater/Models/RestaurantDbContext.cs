@@ -11,4 +11,5 @@ namespace ResturauntRater.Models
         public RestaurantDbContext() : base("DefaultConnection") { }
 
         public DbSet<Restaurant> Restaurants { get; set; }
+    }
 }

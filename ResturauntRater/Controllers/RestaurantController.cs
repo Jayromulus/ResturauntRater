@@ -50,7 +50,7 @@ namespace ResturauntRater.Controllers
         {
             Restaurant targetRestaurant = await _context.Restaurants.FindAsync(id);
             // can do targetRestaurant is null OR can do targetRestaurant == null
-            if(targetRestaurant is null)
+            if (targetRestaurant is null)
             {
                 return NotFound();
             }
@@ -62,11 +62,11 @@ namespace ResturauntRater.Controllers
         [HttpPut]
         public async Task<IHttpActionResult> UpdateRestaurant([FromUri]int id, [FromBody]Restaurant model)
         {
-            if(ModelState.IsValid && model != null)
+            if (ModelState.IsValid && model != null)
             {
                 // this is our entity, meaning it is something from the database
                 Restaurant entity = await _context.Restaurants.FindAsync(id);
-                if(entity != null)
+                if (entity != null)
                 {
                     entity.Name = model.Name;
                     entity.Rating = model.Rating;
@@ -83,6 +83,22 @@ namespace ResturauntRater.Controllers
         }
 
         // DELETE BY ID (delete)
+        [HttpDelete]
+        public async Task<IHttpActionResult> DeleteRestaurant(int id)
+        {
+            var restaurant = await _context.Restaurants.FindAsync(id);
+
+            if (restaurant == null)
+            {
+                return NotFound();
+            }
+            _context.Restaurants.Remove(restaurant);
+            if (await _context.SaveChangesAsync() == 1)
+            {
+                return Ok();
+            }
+            return InternalServerError();
+        }
 
     }
 }

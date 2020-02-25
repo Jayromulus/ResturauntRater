@@ -14,6 +14,7 @@ namespace ResturauntRater.Controllers
     {
         private readonly RestaurantDbContext _context = new RestaurantDbContext();
         // POST (CREATE)
+        [HttpPost]
         public async Task<IHttpActionResult> PostRestaurant(Restaurant restaurant)
         {
             // checks if the state of the model is valid in relation to the annotations that we have given it and if it is not null
@@ -35,6 +36,7 @@ namespace ResturauntRater.Controllers
         }
 
         // GET ALL
+        [HttpGet]
         public async Task<IHttpActionResult> GetAllRestaurants()
         {
             List<Restaurant> restaurants = await _context.Restaurants.ToListAsync();
@@ -43,6 +45,7 @@ namespace ResturauntRater.Controllers
         }
 
         // GET BY ID
+        [HttpGet]
         public async Task<IHttpActionResult> GetByIdRestaurant(int id)
         {
             Restaurant targetRestaurant = await _context.Restaurants.FindAsync(id);
@@ -54,7 +57,30 @@ namespace ResturauntRater.Controllers
 
             return Ok(targetRestaurant);
         }
+
         // PUT BY ID (update)
+        [HttpPut]
+        public async Task<IHttpActionResult> UpdateRestaurant([FromUri]int id, [FromBody]Restaurant model)
+        {
+            if(ModelState.IsValid && model != null)
+            {
+                // this is our entity, meaning it is something from the database
+                Restaurant entity = await _context.Restaurants.FindAsync(id);
+                if(entity != null)
+                {
+                    entity.Name = model.Name;
+                    entity.Rating = model.Rating;
+                    entity.Style = model.Style;
+                    entity.DollarSigns = model.DollarSigns;
+
+                    await _context.SaveChangesAsync();
+                    return Ok();
+                }
+                return NotFound();
+            }
+
+            return BadRequest(ModelState);
+        }
 
         // DELETE BY ID (delete)
 

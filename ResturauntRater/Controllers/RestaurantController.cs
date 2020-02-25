@@ -1,6 +1,7 @@
 ﻿using ResturauntRater.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -33,7 +34,29 @@ namespace ResturauntRater.Controllers
             return BadRequest(ModelState);
         }
 
+        // GET ALL
+        public async Task<IHttpActionResult> GetAllRestaurants()
+        {
+            List<Restaurant> restaurants = await _context.Restaurants.ToListAsync();
+            // return the ok status with the list of restaurants in the body of the response
+            return Ok(restaurants);
+        }
 
+        // GET BY ID
+        public async Task<IHttpActionResult> GetByIdRestaurant(int id)
+        {
+            Restaurant targetRestaurant = await _context.Restaurants.FindAsync(id);
+            // can do targetRestaurant is null OR can do targetRestaurant == null
+            if(targetRestaurant is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(targetRestaurant);
+        }
+        // PUT BY ID (update)
+
+        // DELETE BY ID (delete)
 
     }
 }
